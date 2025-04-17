@@ -38,6 +38,7 @@ export default function App() {
       ) : (
         // JSON.stringify(randomUsers, null, 2)
         randomUsers.map((randomUser, idx) => {
+          if (randomUser.name.first === "Joona") return;
           return (
             <div
               style={{
