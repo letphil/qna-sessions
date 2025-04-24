@@ -1,35 +1,63 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState, createContext, useContext } from "react";
+import { useTextContext, textContext } from "./contexts";
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  const [loggedIn, setIsLoggedIn] = useState(false);
+  const [displayedText, setDisplayedText] = useState("LOGIN PLEASE");
+
+  const checkLocalStorage = () => {
+    const loggedInState = localStorage.getItem("LOGGED_IN_STATE");
+    console.log("loggedInState =", loggedInState);
+    if (loggedInState === "LOGGED_IN")
+      return setIsLoggedIn(true), setDisplayedText("YOU ARE LOGGED IN");
+
+    return () => {
+      // cleanup
+    };
+  };
+
+  useEffect(checkLocalStorage, []);
+
+  const TextProvider = (props) => {
+    return (
+      <textContext.Provider
+        value={{
+          displayedText: displayedText,
+        }}
+      >
+        {props.children}
+      </textContext.Provider>
+    );
+  };
+
+  const handleLoggedInState = () => {
+    if (loggedIn) {
+      setIsLoggedIn(false);
+      setDisplayedText("LOGIN PLEASE");
+      localStorage.setItem("LOGGED_IN_STATE", "LOGGED_OUT");
+    } else {
+      setIsLoggedIn(true);
+      setDisplayedText("YOU ARE LOGGED IN");
+      localStorage.setItem("LOGGED_IN_STATE", "LOGGED_IN");
+    }
+  };
 
   return (
-    <>
+    <TextProvider>
       <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+        <DisplayedText text={displayedText} />
+        <button onClick={handleLoggedInState}>
+          {loggedIn ? "LOGOUT" : "LOGIN"}
         </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </TextProvider>
+  );
 }
 
-export default App
+const DisplayedText = () => {
+  const { displayedText } = useTextContext();
+
+  console.log("displayedText =", displayedText);
+
+  return <h1>{displayedText}</h1>;
+};

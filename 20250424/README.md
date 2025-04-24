@@ -1,5 +1,7 @@
 # QNA Session Apr 24, 2025
 
+## deployment
+
 ## useState
 
 ## useEffect
