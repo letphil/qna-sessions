@@ -1,4 +1,4 @@
-import { useState, Fragment, createElement, PropTypes } from "react";
+import { useState, Fragment, PropTypes, useEffect } from "react";
 
 import "./App.css";
 
@@ -9,6 +9,18 @@ export default function App() {
   // const [count, setCount] = useState(0);
   const [loading, setLoading] = useState(false);
   const [filterKey, setFilterKey] = useState("");
+
+  useEffect(() => {
+    const retrieve = async () => {
+      const res = await fetch(
+        "https://www.coinbase.com/api/v2/assets/prices/bitcoin"
+      );
+      const toJson = await res.json();
+
+      console.log(toJson);
+    };
+    retrieve();
+  }, []);
 
   const retrivePokemon = async () => {
     setLoading(true);
