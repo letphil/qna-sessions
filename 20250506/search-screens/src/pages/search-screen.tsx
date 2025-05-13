@@ -1,25 +1,13 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router";
 
 import useSearchHistoryContext from "../contexts/search-history/use-search-history-context";
 
 export default function SearchScreen() {
   const [currentSearchTerm, setCurrentSearchTerm] = useState<string>("");
+  // const [filteredTerms, setFilteredTerms] = useState<string[]>([]);
   const { searchTerms, setSearchTerms } = useSearchHistoryContext();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    let searches: string[] | string | null = localStorage.getItem("searches");
-    if (searches) searches = JSON.parse(searches as string) as string[];
-    console.log(searches, typeof searches);
-
-    if (Array.isArray(searches)) {
-      console.log("IN HERE");
-      setSearchTerms(searches);
-    } else {
-      setSearchTerms([]);
-    }
-  }, []);
 
   const recentSeachTerms = () => {
     const clone = [...searchTerms];
@@ -33,21 +21,29 @@ export default function SearchScreen() {
 
   return (
     <div className="flex flex-wrap h-screen justify-center mt-5">
-      <div>
+      <div className="w-full px-7">
         <h1 className="text-center text-3xl">Title here</h1>
         <input
           type="text"
           placeholder="Type here"
-          className="input w-100 mt-4"
+          className="input w-full mt-4"
           value={currentSearchTerm}
           onChange={(e) => setCurrentSearchTerm(e.target.value)}
           onKeyUp={(e) => {
             if (e.key === "Enter") {
-              setSearchTerms([...searchTerms, currentSearchTerm]);
+              const clone = [...searchTerms];
+
+              const searchedIndex = searchTerms.findIndex(
+                (search: string) => search === currentSearchTerm
+              );
+              // remove old index if exists
+              if (searchedIndex !== -1) clone.splice(searchedIndex, 1);
+
+              setSearchTerms([...clone, currentSearchTerm]);
 
               localStorage.setItem(
                 "searches",
-                JSON.stringify([...searchTerms, currentSearchTerm])
+                JSON.stringify([...clone, currentSearchTerm])
               );
               setCurrentSearchTerm("");
             }
@@ -66,7 +62,12 @@ export default function SearchScreen() {
                 searchTerm.indexOf(currentSearchTerm) !== -1
             )
         ).map((searchTerm: string, index: number) => (
-          <div key={`recent-searches-${index}`}>
+          <div
+            key={`recent-searches-${index}`}
+            onClick={() => {
+              setCurrentSearchTerm(searchTerm);
+            }}
+          >
             <p>{searchTerm}</p>
           </div>
         ))}
