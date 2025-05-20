@@ -10,7 +10,7 @@
     "dockercompose": false,
     "html": false,
     "json": false,
-    "typescript": true,
+    "typescript": false,
     "svelte": true,
     "python": true,
     "css": false,

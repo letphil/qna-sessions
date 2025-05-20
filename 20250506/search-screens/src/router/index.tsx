@@ -2,6 +2,7 @@ import { createBrowserRouter, RouterProvider } from "react-router";
 import { SearchScreen, HistoryScreen } from "../pages";
 import { useEffect } from "react";
 import useSearchHistoryContext from "../contexts/search-history/use-search-history-context";
+import ResultsScreen from "../pages/results-screen";
 
 export default function AppRouter() {
   const { setSearchTerms } = useSearchHistoryContext();
@@ -22,6 +23,10 @@ export default function AppRouter() {
     {
       path: "/",
       element: <SearchScreen />,
+    },
+    {
+      path: "/results",
+      element: <ResultsScreen />,
     },
     {
       path: "/history",
