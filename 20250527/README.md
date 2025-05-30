@@ -38,3 +38,25 @@
           }, [currentMessage])
 
     3. react-native dependency issues:
+      lots of updates, need to handle changes
+
+    4. type UserTypes = "Admin" | "Client" | "Manager"
+
+        type Profile = {
+          _id: string
+          userType: UserTypes,
+          username: string
+
+        }
+
+        useState<string>("")
+
+        function useState<T>(value) {
+          const _val: T = value
+        }
+
+    5.
+
+
+
+
