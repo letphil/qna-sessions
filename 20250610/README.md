@@ -41,6 +41,10 @@
                   this.updatedAt = new Date().toISOString()
                   this.deletedAt = null
                 }
+
+                asObject() {
+                  return { ...this }
+                }
               }
 
           /comment.ts
@@ -57,5 +61,3 @@
 
 
               i.e. -> const user = new User('jay', 'jay@jay.jay')
-
-
