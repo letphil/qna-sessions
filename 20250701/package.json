@@ -1,0 +1,19 @@
+{
+  "name": "20250701",
+  "version": "1.0.0",
+  "description": "simple cronjob server",
+  "main": "index.js",
+  "scripts": {
+    "start": "node --watch index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "lodash": "^4.17.21",
+    "node-cron": "^4.2.0",
+    "rss-to-json": "^2.1.1"
+  }
+}
